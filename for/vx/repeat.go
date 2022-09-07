@@ -1,6 +1,6 @@
 package iteration
 
-const repeatCount = 5
+const repeatCount = 50000
 
 // Repeat returns character repeated 5 times.
 func Repeat(character string) string {
