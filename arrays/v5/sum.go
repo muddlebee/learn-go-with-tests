@@ -12,8 +12,14 @@ func Sum(numbers []int) int {
 // SumAll calculates the respective sums of every slice passed in.
 func SumAll(numbersToSum ...[]int) []int {
 	var sums []int
-	for _, numbers := range numbersToSum {
-		sums = append(sums, Sum(numbers))
+	//use append keyword for dynamic arrays
+	// for _, numbers := range numbersToSum {
+	// 	sums = append(sums, Sum(numbers))
+	// }
+
+	for i := 0; i < len(numbersToSum); i++ {
+		sums = append(sums, Sum(numbersToSum[i]))
+
 	}
 
 	return sums
