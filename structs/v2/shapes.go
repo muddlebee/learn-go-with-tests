@@ -1,11 +1,16 @@
 package main
 
+type Object struct {
+	Height float64
+	Width  float64
+}
+
 // Perimeter returns the perimeter of a rectangle.
-func Perimeter(width float64, height float64) float64 {
-	return 2 * (width + height)
+func Perimeter(object Object) float64 {
+	return 2 * (object.Height + object.Width)
 }
 
 // Area returns the area of a rectangle.
-func Area(width float64, height float64) float64 {
-	return width * height
+func Area(object Object) float64 {
+	return object.Height * object.Width
 }
