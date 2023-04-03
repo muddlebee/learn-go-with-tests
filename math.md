@@ -133,8 +133,6 @@ package clockface_test
 import (
 	"testing"
 	"time"
-
-	"github.com/gypsydave5/learn-go-with-tests/math/v1/clockface"
 )
 
 func TestSecondHandAtMidnight(t *testing.T) {
@@ -577,7 +575,7 @@ for us to swallow.
 ### Write the test first
 
 ```go
-func TestSecondHandVector(t *testing.T) {
+func TestSecondHandPoint(t *testing.T) {
 	cases := []struct {
 		time  time.Time
 		point Point
@@ -977,7 +975,7 @@ working out what the correct names for all of the nodes and attributes, and how
 to write the correct structure but, happily, someone has written
 [`zek`](https://github.com/miku/zek) a program that will automate all of that
 hard work for us.  Even better, there's an online version at
-https://www.onlinetool.io/xmltogo/. Just
+[https://xml-to-go.github.io/](https://xml-to-go.github.io/). Just
 paste the SVG from the top of the file into one box and - bam - out pops:
 
 ```go

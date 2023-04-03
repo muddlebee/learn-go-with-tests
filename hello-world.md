@@ -21,7 +21,7 @@ To run it type `go run hello.go`.
 
 ## How it works
 
-When you write a program in Go you will have a `main` package defined with a `main` func inside it. Packages are ways of grouping up related Go code together.
+When you write a program in Go, you will have a `main` package defined with a `main` func inside it. Packages are ways of grouping up related Go code together.
 
 The `func` keyword is how you define a function with a name and a body.
 
@@ -230,9 +230,7 @@ func Hello(name string) string {
 
 After refactoring, re-run your tests to make sure you haven't broken anything.
 
-Constants should improve performance of your application as it saves you creating the `"Hello, "` string instance every time `Hello` is called.
-
-To be clear, the performance boost is incredibly negligible for this example! But it's worth thinking about creating constants to capture the meaning of values and sometimes to aid performance.
+It's worth thinking about creating constants to capture the meaning of values and sometimes to aid performance.
 
 ## Hello, world... again
 
@@ -265,13 +263,26 @@ Here we are introducing another tool in our testing arsenal, subtests. Sometimes
 
 A benefit of this approach is you can set up shared code that can be used in the other tests.
 
-There is repeated code when we check if the message is what we expect.
+While we have a failing test, let's fix the code, using an `if`.
+
+```go
+const englishHelloPrefix = "Hello, "
+
+func Hello(name string) string {
+	if name == "" {
+		name = "World"
+	}
+	return englishHelloPrefix + name
+}
+```
+
+If we run our tests we should see it satisfies the new requirement and we haven't accidentally broken the other functionality.
+
+It is important that your tests _are clear specifications_ of what the code needs to do. But there is repeated code when we check if the message is what we expect.
 
 Refactoring is not _just_ for the production code!
 
-It is important that your tests _are clear specifications_ of what the code needs to do.
-
-We can and should refactor our tests.
+Now that the tests are passing, we can and should refactor our tests.
 
 ```go
 func TestHello(t *testing.T) {
@@ -305,25 +316,9 @@ For helper functions, it's a good idea to accept a `testing.TB` which is an inte
 
 `t.Helper()` is needed to tell the test suite that this method is a helper. By doing this when it fails the line number reported will be in our _function call_ rather than inside our test helper. This will help other developers track down problems easier. If you still don't understand, comment it out, make a test fail and observe the test output. Comments in Go are a great way to add additional information to your code, or in this case, a quick way to tell the compiler to ignore a line. You can comment out the `t.Helper()` code by adding two forward slashes `//` at the beginning of the line. You should see that line turn grey or change to another color than the rest of your code to indicate it's now commented out.
 
-Now that we have a well-written failing test, let's fix the code, using an `if`.
-
-```go
-const englishHelloPrefix = "Hello, "
-
-func Hello(name string) string {
-	if name == "" {
-		name = "World"
-	}
-	return englishHelloPrefix + name
-}
-```
-
-If we run our tests we should see it satisfies the new requirement and we haven't accidentally broken the other functionality.
-
 ### Back to source control
 
-Now we are happy with the code I would amend the previous commit so we only
-check in the lovely version of our code with its test.
+Now we are happy with the code I would amend the previous commit so we only check in the lovely version of our code with its test.
 
 ### Discipline
 
@@ -513,7 +508,7 @@ A few new concepts:
     * You can return whatever it's set to by just calling `return` rather than `return prefix`.
   * This will display in the Go Doc for your function so it can make the intent of your code clearer.
 * `default` in the switch case will be branched to if none of the other `case` statements match.
-* The function name starts with a lowercase letter. In Go public functions start with a capital letter and private ones start with a lowercase. We don't want the internals of our algorithm to be exposed to the world, so we made this function private.
+* The function name starts with a lowercase letter. In Go, public functions start with a capital letter and private ones start with a lowercase. We don't want the internals of our algorithm to be exposed to the world, so we made this function private.
 
 ## Wrapping up
 

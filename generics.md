@@ -2,7 +2,7 @@
 
 **[You can find all the code for this chapter here](https://github.com/quii/learn-go-with-tests/tree/main/generics)**
 
-This chapter will give you an introduction to generics, dispel reservations you may have about them and, give you an idea how to simplify some of your code in the future. After reading this you'll know how to write:
+This chapter will give you an introduction to generics, dispel reservations you may have about them, and give you an idea how to simplify some of your code in the future. After reading this you'll know how to write:
 
 - A function that takes generic arguments
 - A generic data-structure
@@ -184,7 +184,7 @@ func InterfaceyFoo(x, y interface{})
 
 What's the point of generics here? Doesn't `any` describe... anything?
 
-In terms of constraints, `any` does mean "anything" and so does `interface{}`. In fact, `any` was added in 1.18 and is _just an alias for `interface`_.
+In terms of constraints, `any` does mean "anything" and so does `interface{}`. In fact, `any` was added in 1.18 and is _just an alias for `interface{}`_.
 
 The difference with the generic version is _you're still describing a specific type_ and what that means is we've still constrained this function to only work with _one_ type.
 
