@@ -26,7 +26,7 @@ So `walk(x interface{}, fn func(string))` will accept any value for `x`.
 
 ### So why not use `interface{}` for everything and have really flexible functions?
 
-- As a user of a function that takes `interface{}` you lose type safety. What if you meant to pass `Foo.bar` of type `string` into a function but instead did `Foo.baz` which is an `int`? The compiler won't be able to inform you of your mistake. You also have no idea _what_ you're allowed to pass to a function. Knowing that a function takes a `UserService` for instance is very useful.
+- As a user of a function that takes `interface{}` you lose type safety. What if you meant to pass `Herd.species` of type `string` into a function but instead did `Herd.count` which is an `int`? The compiler won't be able to inform you of your mistake. You also have no idea _what_ you're allowed to pass to a function. Knowing that a function takes a `UserService` for instance is very useful.
 - As a writer of such a function, you have to be able to inspect _anything_ that has been passed to you and try and figure out what the type is and what you can do with it. This is done using _reflection_. This can be quite clumsy and difficult to read and is generally less performant (as you have to do checks at runtime).
 
 In short only use reflection if you really need to.
@@ -411,7 +411,7 @@ panic: reflect: call of reflect.Value.NumField on ptr Value [recovered]
 func walk(x interface{}, fn func(input string)) {
 	val := reflect.ValueOf(x)
 
-	if val.Kind() == reflect.Ptr {
+	if val.Kind() == reflect.Pointer {
 		val = val.Elem()
 	}
 
@@ -453,7 +453,7 @@ func walk(x interface{}, fn func(input string)) {
 func getValue(x interface{}) reflect.Value {
 	val := reflect.ValueOf(x)
 
-	if val.Kind() == reflect.Ptr {
+	if val.Kind() == reflect.Pointer {
 		val = val.Elem()
 	}
 
@@ -649,10 +649,10 @@ The next type we want to handle is `map`.
 {
     "maps",
     map[string]string{
-        "Foo": "Bar",
-        "Baz": "Boz",
+        "Cow": "Moo",
+        "Sheep": "Baa",
     },
-    []string{"Bar", "Boz"},
+    []string{"Moo", "Baa"},
 },
 ```
 
@@ -661,7 +661,7 @@ The next type we want to handle is `map`.
 ```
 === RUN   TestWalk/maps
     --- FAIL: TestWalk/maps (0.00s)
-        reflection_test.go:86: got [], want [Bar Boz]
+        reflection_test.go:86: got [], want [Moo Baa]
 ```
 
 ## Write enough code to make it pass
@@ -744,8 +744,8 @@ To fix this, we'll need to move our assertion with the maps to a new test where 
 ```go
 t.Run("with maps", func(t *testing.T) {
 	aMap := map[string]string{
-		"Foo": "Bar",
-		"Baz": "Boz",
+		"Cow": "Moo",
+		"Sheep": "Baa",
 	}
 
 	var got []string
@@ -753,8 +753,8 @@ t.Run("with maps", func(t *testing.T) {
 		got = append(got, input)
 	})
 
-	assertContains(t, got, "Bar")
-	assertContains(t, got, "Boz")
+	assertContains(t, got, "Moo")
+	assertContains(t, got, "Baa")
 })
 ```
 
@@ -770,10 +770,12 @@ func assertContains(t testing.TB, haystack []string, needle string) {
 		}
 	}
 	if !contains {
-		t.Errorf("expected %+v to contain %q but it didn't", haystack, needle)
+		t.Errorf("expected %v to contain %q but it didn't", haystack, needle)
 	}
 }
 ```
+
+Since we have extracted maps into a new test, we haven't seen the failure message. Intentionally break the `with maps` test here so that you can check the error message, then fix it again so all tests are passing.
 
 The next type we want to handle is `chan`.
 

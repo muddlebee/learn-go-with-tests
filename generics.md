@@ -105,7 +105,7 @@ So what's the problem?
 By using `interface{}` the compiler can't help us when writing our code, because we're not telling it anything useful about the types of things passed to the function. Try comparing two different types.
 
 ```go
-AssertNotEqual(1, "1")
+AssertEqual(1, "1")
 ```
 
 In this case, we get away with it; the test compiles, and it fails as we'd hope, although the error message `got 1, want 1` is unclear; but do we want to be able to compare strings with integers? What about comparing a `Person` with an `Airport`?
@@ -378,14 +378,14 @@ Even if we have the discipline not to do this, the code is still unpleasant to w
 Add the following test,
 
 ```go
-t.Run("interface stack dx is horrid", func(t *testing.T) {
+t.Run("interface stack DX is horrid", func(t *testing.T) {
 	myStackOfInts := new(StackOfInts)
 
 	myStackOfInts.Push(1)
 	myStackOfInts.Push(2)
 	firstNum, _ := myStackOfInts.Pop()
 	secondNum, _ := myStackOfInts.Pop()
-	AssertEqual(firstNum+secondNum, 3)
+	AssertEqual(t, firstNum+secondNum, 3)
 })
 ```
 
